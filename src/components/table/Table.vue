@@ -551,10 +551,11 @@ export default {
         backendFiltering: Boolean,
 
         tableComponentOptionalClasses: {
-            type: Array,
+            type: [String, Array],
             default: () => [],
-            validator(arr) {
-                return arr.every((e) => typeof e === 'string');
+            validator(classes) {
+                if (typeof classes === 'string') return true;
+                return classes.every((e) => typeof e === 'string');
             }
         },
         rowClass: {
@@ -681,9 +682,12 @@ export default {
             return this.backendSorting ? this.sortMultipleData : this.sortMultipleDataLocal
         },
         tableComponentClasses () {
+            const extraClasses = Array.isArray(this.tableComponentOptionalClasses)
+                ? this.tableComponentOptionalClasses
+                : [this.tableComponentOptionalClasses];
             return [
                 'b-table',
-                ...this.tableComponentOptionalClasses
+                ...extraClasses
             ]
         },
         tableClasses() {
