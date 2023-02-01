@@ -1,5 +1,5 @@
 <template>
-    <div class="b-table">
+    <div :class="tableComponentClasses">
         <slot />
 
         <b-table-mobile-sort
@@ -549,6 +549,15 @@ export default {
         paginationRounded: Boolean,
         backendSorting: Boolean,
         backendFiltering: Boolean,
+
+        tableComponentOptionalClasses: {
+            type: [String, Array],
+            default: () => [],
+            validator(classes) {
+                if (typeof classes === 'string') return true;
+                return classes.every((e) => typeof e === 'string');
+            }
+        },
         rowClass: {
             type: Function,
             default: () => ''
@@ -671,6 +680,15 @@ export default {
     computed: {
         sortMultipleDataComputed() {
             return this.backendSorting ? this.sortMultipleData : this.sortMultipleDataLocal
+        },
+        tableComponentClasses () {
+            const extraClasses = Array.isArray(this.tableComponentOptionalClasses)
+                ? this.tableComponentOptionalClasses
+                : [this.tableComponentOptionalClasses];
+            return [
+                'b-table',
+                ...extraClasses
+            ]
         },
         tableClasses() {
             return {
