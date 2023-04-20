@@ -1,5 +1,5 @@
 <script>
-import { Comment, Fragment, h as createElement, resolveComponent } from 'vue'
+import { Comment, Fragment, h as createElement } from 'vue'
 
 export default {
     name: 'BFieldBody',
@@ -35,7 +35,7 @@ export default {
                             first = false
                         }
                         return createElement(
-                            resolveComponent('b-field'),
+                            'b-field',
                             {
                                 type: this.type,
                                 message
