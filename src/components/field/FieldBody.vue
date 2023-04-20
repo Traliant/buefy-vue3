@@ -1,5 +1,5 @@
 <script>
-import { h as createElement } from 'vue'
+import { Comment, Fragment, h as createElement } from 'vue'
 
 export default {
     name: 'BFieldBody',
@@ -13,18 +13,39 @@ export default {
     },
     render() {
         let first = true
-        return createElement('div', { attrs: { 'class': 'field-body' } }, this.$slots.default().map((element) => {
-            // skip returns and comments
-            if (!element.tag) {
-                return element
+        // wraps the default slot (children) with `b-field`.
+        // children may be given in a fragment and should be extracted.
+        let children = this.$slots.default()
+        if (children.length === 1 && children[0].type === Fragment) {
+            children = children[0].children
+        }
+        return createElement(
+            'div',
+            { class: 'field-body' },
+            {
+                default: () => {
+                    return children.map((element) => {
+                        // skip returns(?) and comments
+                        if (element.type === Comment) {
+                            return element
+                        }
+                        let message
+                        if (first) {
+                            message = this.message
+                            first = false
+                        }
+                        return createElement(
+                            'b-field',
+                            {
+                                type: this.type,
+                                message
+                            },
+                            [element]
+                        )
+                    })
+                }
             }
-            let message
-            if (first) {
-                message = this.message
-                first = false
-            }
-            return createElement('b-field', { attrs: { type: this.type, message } }, [element])
-        }))
+        )
     }
 }
 </script>
