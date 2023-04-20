@@ -101,6 +101,7 @@ import { isMobile } from '../../utils/helpers'
 import config from '../../utils/config'
 import Color from '../../utils/color'
 
+import Button from '../button/Button'
 import Dropdown from '../dropdown/Dropdown'
 import DropdownItem from '../dropdown/DropdownItem'
 import Input from '../input/Input'
@@ -127,6 +128,7 @@ const defaultColorParser = (color, vm) => {
 export default {
     name: 'BColorpicker',
     components: {
+        [Button.name]: Button,
         [ColorpickerHSLRepresentationTriangle.name]: ColorpickerHSLRepresentationTriangle,
         [ColorpickerHSLRepresentationSquare.name]: ColorpickerHSLRepresentationSquare,
         [ColorpickerAlphaSlider.name]: ColorpickerAlphaSlider,
@@ -208,7 +210,11 @@ export default {
             type: Boolean,
             default: () => config.defaultTrapFocus
         },
-        appendToBody: Boolean
+        appendToBody: Boolean,
+        mobileNative: {
+            type: Boolean,
+            default: () => config.defaultTimepickerMobileNative
+        }
     },
     emits: ['active-change', 'update:modelValue'],
     data() {
